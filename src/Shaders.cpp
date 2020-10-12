@@ -10,12 +10,13 @@
 
 #include "Shaders.h"
 #include <Utils.h>
+#include <stdio.h>
 
 //
 // ShaderProgram
 // Base class to all other shader programs
 
-ShaderProgram::ShaderProgram(const char* vertexShaderFile, const char* fragmentShaderFile) {
+ShaderProgram::ShaderProgram(char* vertexShaderFile, char* fragmentShaderFile) {
 	vertexShaderID = loadShader(vertexShaderFile, GL_VERTEX_SHADER);
 	fragmentShaderID = loadShader(fragmentShaderFile, GL_FRAGMENT_SHADER);
 
@@ -23,9 +24,10 @@ ShaderProgram::ShaderProgram(const char* vertexShaderFile, const char* fragmentS
 	glAttachShader(shaderProgramID, vertexShaderID);
 	glAttachShader(shaderProgramID, fragmentShaderID);
 	glLinkProgram(shaderProgramID);
+	glValidateProgram(shaderProgramID);
 }
 
-unsigned int ShaderProgram::loadShader(const char* shaderSourceFile, int shaderType)
+unsigned int ShaderProgram::loadShader(char* shaderSourceFile, int shaderType)
 {
 	char* shaderSource = readFileToString(shaderSourceFile);
 	int shaderID = glCreateShader(shaderType);
@@ -63,6 +65,6 @@ void ShaderProgram::destroy()
 //
 
 StaticShader::StaticShader()
-	: ShaderProgram(VERTEX_SHADER, FRAGMENT_SHADER)
+	: ShaderProgram("shaders/static.vert", "shaders/static.frag")
 {
 }

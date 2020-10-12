@@ -9,9 +9,15 @@ add_executable (LearningGraphics
 	"src/Shaders.cpp"
 	"src/Utils.cpp"
 	"src/Renderer.cpp"
-)
+ )
 
 target_include_directories(LearningGraphics PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_link_directories(LearningGraphics PUBLIC ${CMAKE_SOURCE_DIR}/lib)
 target_link_libraries(LearningGraphics PUBLIC glfw3)
+
+FILE (
+COPY
+	shaders/static.vert
+	shaders/static.frag
+DESTINATION shaders)
 

@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <iostream>
 
+#include <Loader.h>
+#include <Shaders.h>
+#include <Renderer.h>
+
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -41,6 +45,18 @@ int main()
     int gladLoaded = gladLoadGL();
     glfwSwapInterval(1);
 
+    Loader loader;
+    StaticShader shader;
+    Renderer renderer;
+
+    float vertices[] = {
+        0.0f, 0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f
+    };
+
+    RawModel model = loader.loadFromVertices(vertices, 9);
+
     while (!glfwWindowShouldClose(window))
     {
         float ratio;
@@ -52,6 +68,10 @@ int main()
         glViewport(0, 0, width, height);
         glClearColor(1.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        shader.start();
+        renderer.drawRawModel(model);
+        shader.stop();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
